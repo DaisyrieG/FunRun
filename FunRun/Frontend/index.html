@@ -12,63 +12,116 @@
 <body>
  
 <div class="container">
-    <h2>🏃‍♂️ Fun Run Registration</h2>
+    <h2>Your Information</h2>
  
     <div id="message"></div>
  
     <form id="regForm">
-        <div class="form-group">
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" required placeholder="John Doe">
-        </div>
- 
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" required placeholder="john@example.com">
-        </div>
- 
-        <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" required placeholder="09123456789">
-        </div>
- 
-        <div class="form-group">
-            <label for="category">Race Category</label>
-            <select id="category" required>
-                <option value="" disabled selected>Select your distance</option>
-                <option value="3K">3K Fun Run</option>
-                <option value="5K">5K Power Run</option>
-                <option value="10K">10K Marathon Challenge</option>
-            </select>
-        </div>
- 
-        <div class="form-group">
-            <label for="age">Age</label>
-            <input type="number" id="age" required placeholder="e.g. 25" min="5">
-        </div>
- 
-        <div class="form-group">
-            <label>Run or Walk</label>
-            <div style="display: flex; gap: 15px; margin-top: 5px;">
-                <label style="font-weight: normal;"><input type="radio" name="run_or_walk" value="Runner" checked> Runner</label>
-                <label style="font-weight: normal;"><input type="radio" name="run_or_walk" value="Walker"> Walker</label>
+        <div class="form-row">
+            <div class="form-col" style="flex: 2;">
+                <label class="form-label">Full Name</label>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <input type="text" id="firstName" required>
+                        <div class="sub-label">First Name</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <input type="text" id="lastName" required>
+                        <div class="sub-label">Last Name</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-col" style="flex: 1;">
+                <label class="form-label" for="age">Age</label>
+                <input type="number" id="age" required min="1">
             </div>
         </div>
- 
-        <div class="form-group">
-            <label for="shirt_size">Shirt Size</label>
-            <select id="shirt_size" required>
-                <option value="" disabled selected>Please Select</option>
-                <option value="XS">Extra Small (XS)</option>
-                <option value="S">Small (S)</option>
-                <option value="M">Medium (M)</option>
-                <option value="L">Large (L)</option>
-                <option value="XL">Extra Large (XL)</option>
-                <option value="XXL">Double XL (XXL)</option>
-            </select>
+
+        <div class="form-row">
+            <div class="form-col">
+                <label class="form-label">Run or Walk</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="run_or_walk" value="Runner" checked> Runner</label>
+                    <label class="radio-label"><input type="radio" name="run_or_walk" value="Walker"> Walker</label>
+                </div>
+            </div>
+            <div class="form-col"></div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-col">
+                <label class="form-label" for="email">E-mail</label>
+                <input type="email" id="email" required placeholder="ex: myname@example.com">
+                <div class="sub-label">example@example.com</div>
+            </div>
+            <div class="form-col">
+                <label class="form-label" for="phone">Contact Number</label>
+                <input type="tel" id="phone" required placeholder="(000) 000-0000">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-col" style="flex: 1;">
+                <label class="form-label" for="shirt_size">Shirt Size</label>
+                <select id="shirt_size" required>
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+            <div class="form-col" style="flex: 1;"></div>
+        </div>
+
+        <div class="form-group" style="margin-top: 30px;">
+            <label class="form-label">Billing Address</label>
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="street" required>
+                <div class="sub-label">Street Address</div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="street2">
+                <div class="sub-label">Street Address Line 2</div>
+            </div>
+            <div class="form-row" style="margin-bottom: 15px;">
+                <div class="form-col">
+                    <input type="text" id="city" required>
+                    <div class="sub-label">City</div>
+                </div>
+                <div class="form-col">
+                    <input type="text" id="state" required>
+                    <div class="sub-label">State / Province</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col">
+                    <input type="text" id="postal" required>
+                    <div class="sub-label">Postal / Zip Code</div>
+                </div>
+                <div class="form-col">
+                    <select id="country" required>
+                        <option value="United States" selected>United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                    </select>
+                    <div class="sub-label">Country</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row" style="margin-top: 30px; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+            <div class="form-col">
+                <label class="form-label">Do you have additional entries?</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="additional" value="Yes"> Yes</label>
+                    <label class="radio-label"><input type="radio" name="additional" value="No" checked> No</label>
+                </div>
+            </div>
+            <div class="form-col"></div>
         </div>
  
-        <button type="submit">Register Now</button>
+        <button type="submit">Next</button>
     </form>
  
     <a href="admin.html" class="nav-link">View Registered Runners →</a>
@@ -93,34 +146,47 @@
         const msgDiv = document.getElementById('message');
         msgDiv.style.display = 'none';
  
-        const full_name = document.getElementById('fullName').value.trim();
-        const email     = document.getElementById('email').value.trim();
-        const phone     = document.getElementById('phone').value.trim();
-        const category  = document.getElementById('category').value;
+        const first_name  = document.getElementById('firstName').value.trim();
+        const last_name   = document.getElementById('lastName').value.trim();
+        const full_name   = first_name + " " + last_name;
         const age         = document.getElementById('age').value.trim();
         const run_or_walk = document.querySelector('input[name="run_or_walk"]:checked').value;
+        const email       = document.getElementById('email').value.trim();
+        const phone       = document.getElementById('phone').value.trim();
         const shirt_size  = document.getElementById('shirt_size').value;
- 
-        // Client-side validation
-        if (!full_name || !email || !phone || !category || !age || !shirt_size) {
-            msgDiv.style.display = 'block';
-            msgDiv.className     = 'error';
-            msgDiv.innerText     = 'All fields are required.';
-            return;
-        }
- 
+        const street      = document.getElementById('street').value.trim();
+        const street2     = document.getElementById('street2').value.trim();
+        const city        = document.getElementById('city').value.trim();
+        const state       = document.getElementById('state').value.trim();
+        const postal      = document.getElementById('postal').value.trim();
+        const country     = document.getElementById('country').value.trim();
+        const additional  = document.querySelector('input[name="additional"]:checked').value;
+        
+        // Creating address string
+        const address = `${street}, ${street2 ? street2 + ', ' : ''}${city}, ${state} ${postal}, ${country}`;
+
         // Disable button to prevent double submission
         const btn    = document.querySelector('button[type="submit"]');
         btn.disabled = true;
-        btn.innerText = 'Registering...';
+        btn.innerText = 'Processing...';
  
         // AJAX INSERT via Supabase JS client
         const { data, error } = await supabaseClient
             .from('participants')
-            .insert([{ full_name, email, phone, category, age, run_or_walk, shirt_size }]);
+            .insert([{ 
+                full_name, 
+                email, 
+                phone, 
+                category: run_or_walk, // Using run_or_walk as category to not break old UI
+                age, 
+                run_or_walk, 
+                shirt_size,
+                address,
+                additional_entries: additional
+            }]);
  
         btn.disabled  = false;
-        btn.innerText = 'Register Now';
+        btn.innerText = 'Next';
  
         msgDiv.style.display = 'block';
  
@@ -130,7 +196,7 @@
             console.error('Supabase error:', error);
         } else {
             msgDiv.className = 'success';
-            msgDiv.innerText = 'Registration successful! See you at the race! 🏁';
+            msgDiv.innerText = 'Registration successful!';
             document.getElementById('regForm').reset();
         }
     });

@@ -25,12 +25,14 @@
                 <th>Age</th>
                 <th>Type</th>
                 <th>Shirt Size</th>
+                <th>Address</th>
+                <th>Additional</th>
                 <th>Registration Date</th>
             </tr>
         </thead>
         <tbody id="runnersTableBody">
             <tr>
-                <td colspan="9" style="text-align: center;">Loading runners...</td>
+                <td colspan="11" style="text-align: center;">Loading runners...</td>
             </tr>
         </tbody>
     </table>
@@ -62,7 +64,7 @@
         if (error) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="9" style="text-align:center; color:#f43f5e;">
+                    <td colspan="11" style="text-align:center; color:#f43f5e;">
                         Failed to load runners: ${error.message}
                     </td>
                 </tr>`;
@@ -73,7 +75,7 @@
         if (!data || data.length === 0) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="9" style="text-align:center;">
+                    <td colspan="11" style="text-align:center;">
                         No runners registered yet.
                     </td>
                 </tr>`;
@@ -92,6 +94,8 @@
                 <td>${runner.age || '-'}</td>
                 <td>${runner.run_or_walk || '-'}</td>
                 <td>${runner.shirt_size || '-'}</td>
+                <td>${runner.address || '-'}</td>
+                <td>${runner.additional_entries || '-'}</td>
                 <td>${new Date(runner.created_at).toLocaleString()}</td>
             `;
             tableBody.appendChild(row);
