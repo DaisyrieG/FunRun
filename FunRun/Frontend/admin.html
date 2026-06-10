@@ -6,7 +6,6 @@
     <title>Registered Runners Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- Supabase JS CDN — no backend needed -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -26,13 +25,12 @@
                 <th>Type</th>
                 <th>Shirt Size</th>
                 <th>Address</th>
-                <th>Additional</th>
                 <th>Registration Date</th>
             </tr>
         </thead>
         <tbody id="runnersTableBody">
             <tr>
-                <td colspan="11" style="text-align: center;">Loading runners...</td>
+                <td colspan="10" style="text-align: center;">Loading runners...</td>
             </tr>
         </tbody>
     </table>
@@ -41,18 +39,14 @@
 </div>
 
 <script>
-    // =============================================
-    // Supabase Direct Connection (No backend needed)
-    // =============================================
+  
     const SUPABASE_URL  = "https://wsdtpgwfdmnxvzfnaxxs.supabase.co";
     const SUPABASE_ANON = "sb_publishable_MCjfUBNehXZH__zqNi2wwg_7282auSG";
 
     const { createClient } = supabase;
     const supabaseClient   = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-    // =============================================
-    // AJAX GET — Fetch all participants via Supabase JS
-    // =============================================
+   
     document.addEventListener("DOMContentLoaded", async function () {
         const tableBody = document.getElementById('runnersTableBody');
 
@@ -64,7 +58,7 @@
         if (error) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="11" style="text-align:center; color:#f43f5e;">
+                    <td colspan="10" style="text-align:center; color:#f43f5e;">
                         Failed to load runners: ${error.message}
                     </td>
                 </tr>`;
@@ -75,7 +69,7 @@
         if (!data || data.length === 0) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="11" style="text-align:center;">
+                    <td colspan="10" style="text-align:center;">
                         No runners registered yet.
                     </td>
                 </tr>`;
@@ -95,7 +89,6 @@
                 <td>${runner.run_or_walk || '-'}</td>
                 <td>${runner.shirt_size || '-'}</td>
                 <td>${runner.address || '-'}</td>
-                <td>${runner.additional_entries || '-'}</td>
                 <td>${new Date(runner.created_at).toLocaleString()}</td>
             `;
             tableBody.appendChild(row);
