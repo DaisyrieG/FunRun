@@ -22,12 +22,15 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Category</th>
+                <th>Age</th>
+                <th>Type</th>
+                <th>Shirt Size</th>
                 <th>Registration Date</th>
             </tr>
         </thead>
         <tbody id="runnersTableBody">
             <tr>
-                <td colspan="6" style="text-align: center;">Loading runners...</td>
+                <td colspan="9" style="text-align: center;">Loading runners...</td>
             </tr>
         </tbody>
     </table>
@@ -53,13 +56,13 @@
 
         const { data, error } = await supabaseClient
             .from('participants')
-            .select('id, full_name, email, phone, category, created_at')
+            .select('*')
             .order('created_at', { ascending: false });
 
         if (error) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="6" style="text-align:center; color:#f43f5e;">
+                    <td colspan="9" style="text-align:center; color:#f43f5e;">
                         Failed to load runners: ${error.message}
                     </td>
                 </tr>`;
@@ -70,7 +73,7 @@
         if (!data || data.length === 0) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="6" style="text-align:center;">
+                    <td colspan="9" style="text-align:center;">
                         No runners registered yet.
                     </td>
                 </tr>`;
@@ -86,6 +89,9 @@
                 <td>${runner.email}</td>
                 <td>${runner.phone}</td>
                 <td><strong>${runner.category}</strong></td>
+                <td>${runner.age || '-'}</td>
+                <td>${runner.run_or_walk || '-'}</td>
+                <td>${runner.shirt_size || '-'}</td>
                 <td>${new Date(runner.created_at).toLocaleString()}</td>
             `;
             tableBody.appendChild(row);

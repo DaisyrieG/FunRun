@@ -42,6 +42,32 @@
             </select>
         </div>
  
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" required placeholder="e.g. 25" min="5">
+        </div>
+ 
+        <div class="form-group">
+            <label>Run or Walk</label>
+            <div style="display: flex; gap: 15px; margin-top: 5px;">
+                <label style="font-weight: normal;"><input type="radio" name="run_or_walk" value="Runner" checked> Runner</label>
+                <label style="font-weight: normal;"><input type="radio" name="run_or_walk" value="Walker"> Walker</label>
+            </div>
+        </div>
+ 
+        <div class="form-group">
+            <label for="shirt_size">Shirt Size</label>
+            <select id="shirt_size" required>
+                <option value="" disabled selected>Please Select</option>
+                <option value="XS">Extra Small (XS)</option>
+                <option value="S">Small (S)</option>
+                <option value="M">Medium (M)</option>
+                <option value="L">Large (L)</option>
+                <option value="XL">Extra Large (XL)</option>
+                <option value="XXL">Double XL (XXL)</option>
+            </select>
+        </div>
+ 
         <button type="submit">Register Now</button>
     </form>
  
@@ -71,9 +97,12 @@
         const email     = document.getElementById('email').value.trim();
         const phone     = document.getElementById('phone').value.trim();
         const category  = document.getElementById('category').value;
+        const age         = document.getElementById('age').value.trim();
+        const run_or_walk = document.querySelector('input[name="run_or_walk"]:checked').value;
+        const shirt_size  = document.getElementById('shirt_size').value;
  
         // Client-side validation
-        if (!full_name || !email || !phone || !category) {
+        if (!full_name || !email || !phone || !category || !age || !shirt_size) {
             msgDiv.style.display = 'block';
             msgDiv.className     = 'error';
             msgDiv.innerText     = 'All fields are required.';
@@ -88,7 +117,7 @@
         // AJAX INSERT via Supabase JS client
         const { data, error } = await supabaseClient
             .from('participants')
-            .insert([{ full_name, email, phone, category }]);
+            .insert([{ full_name, email, phone, category, age, run_or_walk, shirt_size }]);
  
         btn.disabled  = false;
         btn.innerText = 'Register Now';
