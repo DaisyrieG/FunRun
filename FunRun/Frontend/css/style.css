@@ -94,6 +94,12 @@ button:hover {
     opacity: 0.9;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .nav-link {
     display: block;
     text-align: center;
@@ -142,4 +148,4 @@ tr:hover {
 }
 
 .success { background: rgba(42, 245, 152, 0.2); color: #2af598; border: 1px solid #2af598; }
-.error { background: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid #f43f5e; }
+.error   { background: rgba(244, 63, 94, 0.2);  color: #f43f5e; border: 1px solid #f43f5e; }

@@ -5,30 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Run Registration</title>
     <link rel="stylesheet" href="css/style.css">
+ 
+    <!-- Supabase JS CDN — no backend needed -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
+ 
 <div class="container">
     <h2>🏃‍♂️ Fun Run Registration</h2>
-    
+ 
     <div id="message"></div>
-
+ 
     <form id="regForm">
         <div class="form-group">
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" required placeholder="John Doe">
         </div>
-        
+ 
         <div class="form-group">
             <label for="email">Email Address</label>
             <input type="email" id="email" required placeholder="john@example.com">
         </div>
-
+ 
         <div class="form-group">
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" required placeholder="09123456789">
         </div>
-
+ 
         <div class="form-group">
             <label for="category">Race Category</label>
             <select id="category" required>
@@ -38,57 +41,72 @@
                 <option value="10K">10K Marathon Challenge</option>
             </select>
         </div>
-
+ 
         <button type="submit">Register Now</button>
     </form>
-
+ 
     <a href="admin.html" class="nav-link">View Registered Runners →</a>
 </div>
-
+ 
 <script>
-    // Absolute path targeting your decoupled XAMPP backend API
-    const API_URL = "http://localhost/fun-run/backend/api.php";
-
-    document.getElementById('regForm').addEventListener('submit', function(e) {
-        e.preventDefault(); 
-
+    // =============================================
+    // Supabase Direct Connection (No backend needed)
+    // =============================================
+    const SUPABASE_URL  = "https://wsdtpgwfdmnxvzfnaxxs.supabase.co";
+    const SUPABASE_ANON = "sb_publishable_MCjfUBNehXZH__zqNi2wwg_7282auSG";
+ 
+    const { createClient } = supabase;
+    const supabaseClient   = createClient(SUPABASE_URL, SUPABASE_ANON);
+ 
+    // =============================================
+    // AJAX POST — Insert participant via Supabase JS
+    // =============================================
+    document.getElementById('regForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+ 
         const msgDiv = document.getElementById('message');
-        
-        const formData = {
-            full_name: document.getElementById('fullName').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            category: document.getElementById('category').value
-        };
-
-        // AJAX POST Request via Fetch
-        fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
+        msgDiv.style.display = 'none';
+ 
+        const full_name = document.getElementById('fullName').value.trim();
+        const email     = document.getElementById('email').value.trim();
+        const phone     = document.getElementById('phone').value.trim();
+        const category  = document.getElementById('category').value;
+ 
+        // Client-side validation
+        if (!full_name || !email || !phone || !category) {
             msgDiv.style.display = 'block';
-            if(data.status === 'success') {
-                msgDiv.className = 'success';
-                msgDiv.innerText = data.message;
-                document.getElementById('regForm').reset(); 
-            } else {
-                msgDiv.className = 'error';
-                msgDiv.innerText = data.message;
-            }
-        })
-        .catch(error => {
-            msgDiv.style.display = 'block';
+            msgDiv.className     = 'error';
+            msgDiv.innerText     = 'All fields are required.';
+            return;
+        }
+ 
+        // Disable button to prevent double submission
+        const btn    = document.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.innerText = 'Registering...';
+ 
+        // AJAX INSERT via Supabase JS client
+        const { data, error } = await supabaseClient
+            .from('participants')
+            .insert([{ full_name, email, phone, category }]);
+ 
+        btn.disabled  = false;
+        btn.innerText = 'Register Now';
+ 
+        msgDiv.style.display = 'block';
+ 
+        if (error) {
             msgDiv.className = 'error';
-            msgDiv.innerText = 'Error: Cannot reach the backend API.';
-            console.error('Error:', error);
-        });
+            msgDiv.innerText = 'Registration failed: ' + error.message;
+            console.error('Supabase error:', error);
+        } else {
+            msgDiv.className = 'success';
+            msgDiv.innerText = 'Registration successful! See you at the race! 🏁';
+            document.getElementById('regForm').reset();
+        }
     });
 </script>
-
+ 
 </body>
 </html>
+ 

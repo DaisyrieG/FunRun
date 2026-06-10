@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registered Runners Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Supabase JS CDN — no backend needed -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
 <div class="container wide-container">
     <h2>🏅 Registered Runners Dashboard</h2>
-    
+
     <table>
         <thead>
             <tr>
@@ -33,39 +36,59 @@
 </div>
 
 <script>
-    // Absolute path targeting your decoupled XAMPP backend API
-    const API_URL = "http://localhost/fun-run/backend/api.php";
+    // =============================================
+    // Supabase Direct Connection (No backend needed)
+    // =============================================
+    const SUPABASE_URL  = "https://wsdtpgwfdmnxvzfnaxxs.supabase.co";
+    const SUPABASE_ANON = "sb_publishable_MCjfUBNehXZH__zqNi2wwg_7282auSG";
 
-    document.addEventListener("DOMContentLoaded", function() {
+    const { createClient } = supabase;
+    const supabaseClient   = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // =============================================
+    // AJAX GET — Fetch all participants via Supabase JS
+    // =============================================
+    document.addEventListener("DOMContentLoaded", async function () {
         const tableBody = document.getElementById('runnersTableBody');
 
-        // AJAX GET Request via Fetch
-        fetch(API_URL)
-        .then(response => response.json())
-        .then(data => {
-            tableBody.innerHTML = ''; 
+        const { data, error } = await supabaseClient
+            .from('participants')
+            .select('id, full_name, email, phone, category, created_at')
+            .order('created_at', { ascending: false });
 
-            if (data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No runners registered yet.</td></tr>`;
-                return;
-            }
+        if (error) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center; color:#f43f5e;">
+                        Failed to load runners: ${error.message}
+                    </td>
+                </tr>`;
+            console.error('Supabase error:', error);
+            return;
+        }
 
-            data.forEach(runner => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${runner.id}</td>
-                    <td>${runner.full_name}</td>
-                    <td>${runner.email}</td>
-                    <td>${runner.phone}</td>
-                    <td><strong>${runner.category}</strong></td>
-                    <td>${new Date(runner.created_at).toLocaleString()}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => {
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #f43f5e;">Failed to fetch dashboard data.</td></tr>`;
-            console.error('Error tracking data:', error);
+        if (!data || data.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center;">
+                        No runners registered yet.
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        tableBody.innerHTML = '';
+        data.forEach(runner => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${runner.id}</td>
+                <td>${runner.full_name}</td>
+                <td>${runner.email}</td>
+                <td>${runner.phone}</td>
+                <td><strong>${runner.category}</strong></td>
+                <td>${new Date(runner.created_at).toLocaleString()}</td>
+            `;
+            tableBody.appendChild(row);
         });
     });
 </script>
