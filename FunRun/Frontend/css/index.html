@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Run Registration</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>🏃‍♂️ Fun Run Registration</h2>
+    
+    <div id="message"></div>
+
+    <form id="regForm">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" required placeholder="John Doe">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" required placeholder="john@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required placeholder="09123456789">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Race Category</label>
+            <select id="category" required>
+                <option value="" disabled selected>Select your distance</option>
+                <option value="3K">3K Fun Run</option>
+                <option value="5K">5K Power Run</option>
+                <option value="10K">10K Marathon Challenge</option>
+            </select>
+        </div>
+
+        <button type="submit">Register Now</button>
+    </form>
+
+    <a href="admin.html" class="nav-link">View Registered Runners →</a>
+</div>
+
+<script>
+    // Absolute path targeting your decoupled XAMPP backend API
+    const API_URL = "http://localhost/fun-run/backend/api.php";
+
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        const msgDiv = document.getElementById('message');
+        
+        const formData = {
+            full_name: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            category: document.getElementById('category').value
+        };
+
+        // AJAX POST Request via Fetch
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            msgDiv.style.display = 'block';
+            if(data.status === 'success') {
+                msgDiv.className = 'success';
+                msgDiv.innerText = data.message;
+                document.getElementById('regForm').reset(); 
+            } else {
+                msgDiv.className = 'error';
+                msgDiv.innerText = data.message;
+            }
+        })
+        .catch(error => {
+            msgDiv.style.display = 'block';
+            msgDiv.className = 'error';
+            msgDiv.innerText = 'Error: Cannot reach the backend API.';
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
